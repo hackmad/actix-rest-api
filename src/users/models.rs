@@ -1,5 +1,5 @@
-use crate::schema::users;
-use crate::schema::users::dsl::users as all_users;
+use super::schema::users;
+use super::schema::users::dsl::users as all_users;
 use diesel;
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
@@ -13,6 +13,7 @@ pub struct User {
     pub password_hash: String,
     pub first_name: String,
 }
+
 impl User {
     pub fn get_all_users(conn: &PgConnection) -> Vec<UserResponse> {
         all_users

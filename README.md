@@ -19,6 +19,12 @@ Installing /Users/ahmad/.cargo/bin/diesel
 Installed package `diesel_cli v1.4.1` (executable `diesel`)
 ```
 
+Alias the diesel binary:
+
+```bash
+alias diesel=/Users/ahmad/.cargo/bin/diesel
+```
+
 Start postgres container:
 
 ```bash

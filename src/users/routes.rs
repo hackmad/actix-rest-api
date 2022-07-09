@@ -1,4 +1,4 @@
-use crate::models::*;
+use super::models::*;
 use actix_web::{
     error::ResponseError,
     get,
@@ -87,6 +87,13 @@ pub async fn login(
             msg: "Invalid username and/or password".to_string(),
         }),
     }
+}
+
+pub fn init_routes(cfg: &mut web::ServiceConfig) {
+    cfg.service(get_all)
+        .service(new_user)
+        .service(find_user)
+        .service(login);
 }
 
 #[cfg(test)]
