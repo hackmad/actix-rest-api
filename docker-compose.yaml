@@ -1,0 +1,19 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:13.4-alpine3.14
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: example
+    ports:
+      - "5432:5432"
+
+  rest-api:
+    build: .
+    environment:
+      DATABASE_URL: postgres://postgres:example@postgres:5432/myapp
+      RUST_LOG: info
+    links:
+      - postgres
+    ports:
+      - "8000:8000"

@@ -1,0 +1,51 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug executable 'actix-rest-api'",
+            "cargo": {
+                "args": [
+                    "build",
+                    "--bin=actix-rest-api",
+                    "--package=actix-rest-api"
+                ],
+                "filter": {
+                    "name": "actix-rest-api",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "DATABASE_URL": "postgres://postgres:example@localhost:5432/myapp"
+            }
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "Debug unit tests in executable 'actix-rest-api'",
+            "cargo": {
+                "args": [
+                    "test",
+                    "--no-run",
+                    "--bin=actix-rest-api",
+                    "--package=actix-rest-api"
+                ],
+                "filter": {
+                    "name": "actix-rest-api",
+                    "kind": "bin"
+                }
+            },
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "DATABASE_URL": "postgres://postgres:example@localhost:5432/myapp-test"
+            }
+        }
+    ]
+}

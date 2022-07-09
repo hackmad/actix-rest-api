@@ -1,0 +1,11 @@
+{
+    "files.watcherExclude": {
+        "**/target": true
+    },
+    "rust-analyzer.server.extraEnv": {
+        "DATABASE_URL": "postgres://postgres:example@localhost:5432/myapp"
+    },
+    "rust-analyzer.runnableEnv": {
+        "DATABASE_URL": "postgres://postgres:example@localhost:5432/myapp"
+    }
+}
