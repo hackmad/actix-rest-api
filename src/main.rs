@@ -2,6 +2,9 @@ extern crate derive_more;
 #[macro_use]
 extern crate diesel;
 extern crate env_logger;
+#[cfg(test)]
+#[macro_use]
+extern crate lazy_static;
 #[macro_use]
 extern crate serde_derive;
 extern crate serde_json;

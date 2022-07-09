@@ -88,3 +88,39 @@ pub async fn login(
         }),
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::{http, test, web, App};
+    use r2d2;
+    use std::env;
+
+    lazy_static! {
+        static ref DB_POOL: DbPool = {
+            let database_url = env::var("DATABASE_URL").expect("DATABASE_URL must be set");
+            let manager = ConnectionManager::<PgConnection>::new(database_url);
+
+            // Create connection pool
+            r2d2::Pool::builder()
+                .build(manager)
+                .expect("Failed to create database pool.")
+        };
+    }
+
+    #[actix_web::test]
+    async fn get_all_users_returns_empty_when_no_users_exist() {
+        let app = App::new()
+            .app_data(web::Data::new(DB_POOL.clone()))
+            .service(get_all);
+        let mut app = test::init_service(app).await;
+
+        let request = test::TestRequest::get().uri("/users").to_request();
+        let response = test::call_service(&mut app, request).await;
+
+        assert_eq!(response.status(), http::StatusCode::OK);
+
+        let body = test::read_body(response).await;
+        assert_eq!(body, "[]".as_bytes());
+    }
+}
