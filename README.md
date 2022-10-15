@@ -1,4 +1,4 @@
-# Rest API with Rocket + Diesel
+# Rest API with Actix + Diesel
 
 ```bash
 brew install libpq
