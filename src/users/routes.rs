@@ -38,8 +38,8 @@ impl ResponseError for UserError {
 
 #[get("/users")]
 pub async fn get_all(pool: web::Data<DbPool>) -> Result<web::Json<Vec<UserResponse>>, UserError> {
-    let conn = pool.get().map_err(|_e| UserError::InternalError)?;
-    Ok(web::Json(User::get_all_users(&conn)))
+    let mut conn = pool.get().map_err(|_e| UserError::InternalError)?;
+    Ok(web::Json(User::get_all_users(&mut conn)))
 }
 
 #[post("/users")]
@@ -47,13 +47,13 @@ pub async fn new_user(
     pool: web::Data<DbPool>,
     new_user: web::Json<NewUserRequest>,
 ) -> Result<web::Json<UserResponse>, UserError> {
-    let conn = pool.get().map_err(|_e| UserError::InternalError)?;
+    let mut conn = pool.get().map_err(|_e| UserError::InternalError)?;
 
     let username = new_user.username.clone();
-    let result = User::insert_user(new_user.into_inner(), &conn);
+    let result = User::insert_user(new_user.into_inner(), &mut conn);
     match result {
         Ok(_) => {
-            let user = User::get_user_by_username(username.as_str(), &conn);
+            let user = User::get_user_by_username(username.as_str(), &mut conn);
             match user {
                 Some(u) => Ok(web::Json(u)),
                 None => Err(UserError::BadRequest {
@@ -70,8 +70,8 @@ pub async fn find_user(
     pool: web::Data<DbPool>,
     path: web::Path<(String,)>,
 ) -> Result<Option<web::Json<UserResponse>>, UserError> {
-    let conn = pool.get().map_err(|_e| UserError::InternalError)?;
-    Ok(User::get_user_by_username(path.0.as_str(), &conn).map(|user| web::Json(user)))
+    let mut conn = pool.get().map_err(|_e| UserError::InternalError)?;
+    Ok(User::get_user_by_username(path.0.as_str(), &mut conn).map(|user| web::Json(user)))
 }
 
 #[post("/login")]
@@ -79,8 +79,8 @@ pub async fn login(
     pool: web::Data<DbPool>,
     creds: web::Json<LoginRequest>,
 ) -> Result<web::Json<UserResponse>, UserError> {
-    let conn = pool.get().map_err(|_e| UserError::InternalError)?;
-    let result = User::login(creds.into_inner(), &conn);
+    let mut conn = pool.get().map_err(|_e| UserError::InternalError)?;
+    let result = User::login(creds.into_inner(), &mut conn);
     match result {
         Some(user) => Ok(web::Json(user)),
         None => Err(UserError::Forbidden {

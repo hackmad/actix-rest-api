@@ -15,7 +15,7 @@ pub struct User {
 }
 
 impl User {
-    pub fn get_all_users(conn: &PgConnection) -> Vec<UserResponse> {
+    pub fn get_all_users(conn: &mut PgConnection) -> Vec<UserResponse> {
         all_users
             .order(users::id.desc())
             .load::<User>(conn)
@@ -25,14 +25,14 @@ impl User {
             .collect()
     }
 
-    pub fn insert_user(user: NewUserRequest, conn: &PgConnection) -> QueryResult<usize> {
+    pub fn insert_user(user: NewUserRequest, conn: &mut PgConnection) -> QueryResult<usize> {
         let new_user = NewUser::from(user);
         diesel::insert_into(users::table)
             .values(&new_user)
             .execute(conn)
     }
 
-    pub fn get_user_by_username(username: &str, conn: &PgConnection) -> Option<UserResponse> {
+    pub fn get_user_by_username(username: &str, conn: &mut PgConnection) -> Option<UserResponse> {
         let users = all_users
             .filter(users::username.eq(username))
             .load::<User>(conn)
@@ -45,7 +45,7 @@ impl User {
         }
     }
 
-    pub fn login(creds: LoginRequest, conn: &PgConnection) -> Option<UserResponse> {
+    pub fn login(creds: LoginRequest, conn: &mut PgConnection) -> Option<UserResponse> {
         let users = all_users
             .filter(users::username.eq(creds.username.clone()))
             .load::<User>(conn)
@@ -74,7 +74,7 @@ impl User {
 
 /// Used to insert users to database
 #[derive(Serialize, Deserialize, Insertable)]
-#[table_name = "users"]
+#[diesel(table_name = users)]
 pub struct NewUser {
     pub username: String,
     pub password_hash: String,

@@ -16,14 +16,10 @@ for this at the end of the install.
 
 ```bash
 Installing /Users/ahmad/.cargo/bin/diesel
-Installed package `diesel_cli v1.4.1` (executable `diesel`)
+Installed package `diesel_cli v2.0.1` (executable `diesel`)
 ```
 
-Alias the diesel binary:
-
-```bash
-alias diesel=/Users/ahmad/.cargo/bin/diesel
-```
+The diesel binary will be in `$HOME/.cargo/bin/diesel`
 
 Start postgres container:
 
