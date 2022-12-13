@@ -22,7 +22,5 @@ RUN cargo install --path . --locked
 FROM debian:bookworm-slim
 RUN apt-get update && apt-get install -y libpq-dev
 COPY --from=build /actix-rest-api/target/release/actix-rest-api /
-ENV ROCKET_ADDRESS=0.0.0.0
-ENV ROCKET_PORT=8000
 EXPOSE 8000
 CMD ["/actix-rest-api"]
