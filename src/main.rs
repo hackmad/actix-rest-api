@@ -1,5 +1,4 @@
 extern crate derive_more;
-#[macro_use]
 extern crate diesel;
 extern crate env_logger;
 #[cfg_attr(test, macro_use)]
@@ -9,6 +8,7 @@ extern crate serde_derive;
 extern crate serde_json;
 extern crate sodiumoxide;
 
+mod schema;
 mod users;
 
 use actix_web::{middleware::Logger, web, App, HttpServer};
